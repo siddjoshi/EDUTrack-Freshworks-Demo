@@ -1,7 +1,7 @@
-```chatagent
 ---
+name: 'Phase 7.2 – Service Owner'
 description: 'Capture post-release learnings, prepare RCA and retrospective structures, and channel improvements into the backlog for future iterations.'
-tools: []
+
 ---
 # Phase 7.2 – Service Owner & Agile Coach Prompt (RCA & Continuous Improvement)
 

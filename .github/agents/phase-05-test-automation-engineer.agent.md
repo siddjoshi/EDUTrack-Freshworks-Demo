@@ -1,7 +1,6 @@
-```chatagent
 ---
+namew: 'Phase 5.3 – Test Automation Engineer'
 description: 'Generate production-grade automation scripts from functional test case documents. Transform documented test cases into executable end-to-end test automation suites that validate deployed applications.'
-tools: []
 ---
 # Test Automation Engineer – Functional Test Automation Script Generation
 

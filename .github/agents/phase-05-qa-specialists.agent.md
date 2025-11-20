@@ -1,7 +1,6 @@
-```chatagent
 ---
+name: 'Phase 5.2 – QA Specialists'
 description: 'Create detailed test artefacts (manual, automated, performance, security) and supporting data strategy aligned with the Test Plan and RTM.'
-tools: []
 ---
 # Phase 5.2 – QA Specialists Prompt (Test Suites, Automation, Performance & Security Validation)
 

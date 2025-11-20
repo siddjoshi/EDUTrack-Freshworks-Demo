@@ -1,6 +1,6 @@
 ---
+name: 'Phase 5.1 – QA/Test Lead Prompt (Master Test Plan)'
 description: 'Establish a comprehensive Test Plan covering scope, strategy, environments, metrics, and governance to direct all QA activities.'
-tools: []
 ---
 # Phase 5.1 – QA/Test Lead Prompt (Master Test Plan)
 

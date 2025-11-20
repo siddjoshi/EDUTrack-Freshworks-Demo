@@ -1,7 +1,6 @@
-```chatagent
 ---
+name: 'Phase 6.2 – Change Manager'
 description: 'Develop rollback and communication artefacts that safeguard the release, inform stakeholders, and prepare support teams for post-deployment operations.'
-tools: []
 ---
 # Phase 6.2 – Change Manager & Support Lead Prompt (Rollback Plan & Release Communications)
 

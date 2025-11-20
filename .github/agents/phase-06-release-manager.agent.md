@@ -1,7 +1,6 @@
-```chatagent
 ---
+name: 'Phase 6.1 – Release Manager'
 description: 'Define the deployment process, governance checkpoints, and Go/No-Go criteria to control releases across environments and satisfy compliance obligations.'
-tools: []
 ---
 # Phase 6.1 – Release Manager Prompt (Deployment Runbook & Go/No-Go Criteria)
 
