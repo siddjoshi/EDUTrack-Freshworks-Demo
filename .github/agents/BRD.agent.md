@@ -30,8 +30,8 @@ Translate business intent into baseline BRD and PRD artefacts that provide compl
 
 ## Procedure
 1. **Foundation Review** – Use governance artefacts to list required approvals, cadence, and decision rights; capture unresolved items in change log.
-2. **Populate BRD** – Clone ` templates/BRD.md` into `docs/requirements/BRD.md`; fill executive summary, objectives, scope, processes, benefits, cost-benefit analysis, risks, roadmap, stakeholder expectations, approvals. Map each objective to KPIs (IDs) and stakeholder expectations.
-3. **Draft PRD** – Clone ` templates/PRD.md` into `docs/requirements/PRD.md`; document personas, journeys, feature catalogue, high-level stories, acceptance criteria, analytics, release strategy, risk register, compliance considerations.
+2. **Populate BRD** – Use ` templates/BRD.md` to create `docs/requirements/BRD.md`; fill executive summary, objectives, scope, processes, benefits, cost-benefit analysis, risks, roadmap, stakeholder expectations, approvals. Map each objective to KPIs (IDs) and stakeholder expectations.
+3. **Draft PRD** – Use ` templates/PRD.md` to create `docs/requirements/PRD.md`; document personas, journeys, feature catalogue, high-level stories, acceptance criteria, analytics, release strategy, risk register, compliance considerations.
 4. **Assign Requirement IDs** – Define consistent ID scheme (e.g., BRD-OBJ-01, PRD-FEAT-01) and embed references within both documents for traceability.
 5. **Traceability Preparation** – Create tables summarising how requirements flow into upcoming SRS/RTM/backlog artefacts; flag regulatory/compliance items requiring dedicated NFR coverage.
 6. **Stakeholder Integration** – Populate approval tables using stakeholder IDs; state review cadence per communication plan.
