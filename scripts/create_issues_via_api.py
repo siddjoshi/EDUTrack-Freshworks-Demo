@@ -10,6 +10,7 @@ import subprocess
 import sys
 import urllib.request
 import urllib.error
+import urllib.parse
 from typing import Dict, List, Optional
 
 # Add the scripts directory to path
@@ -21,8 +22,30 @@ from create_github_issues import BacklogItem, collect_backlog_items, DEFAULT_REP
 # See: https://git-scm.com/docs/git-credential
 GIT_CREDENTIAL_INPUT = "protocol=https\nhost=github.com\n\n"
 
-# Valid GitHub hosts for URL validation
-GITHUB_HOSTS = ['github.com/', 'github.com:', '@github.com']
+def is_github_url(url: str) -> bool:
+    """
+    Validate that a URL is a legitimate GitHub URL.
+    Prevents subdomain attacks by parsing and validating the hostname.
+    """
+    try:
+        # Handle git@ SSH URLs
+        if url.startswith('git@'):
+            # Extract hostname from git@github.com:user/repo format
+            if '@' in url and ':' in url:
+                hostname = url.split('@')[1].split(':')[0]
+                return hostname == 'github.com'
+            return False
+        
+        # Handle HTTP/HTTPS URLs
+        parsed = urllib.parse.urlparse(url)
+        hostname = parsed.hostname
+        
+        # Check for exact match (prevents subdomain attacks)
+        return hostname == 'github.com'
+        
+    except Exception:
+        return False
+
 
 def get_github_token() -> Optional[str]:
     """Get GitHub token from git credential helper or environment"""
@@ -47,8 +70,8 @@ def get_github_token() -> Optional[str]:
         )
         remote_url = result.stdout.strip()
         
-        # Validate this is a genuine GitHub URL (not subdomain attack)
-        if not any(host in remote_url for host in GITHUB_HOSTS):
+        # Validate this is a genuine GitHub URL using proper parsing
+        if not is_github_url(remote_url):
             return None
         
         # Try git credential fill using the credential helper protocol
@@ -62,7 +85,7 @@ def get_github_token() -> Optional[str]:
         for line in result.stdout.split('\n'):
             if line.startswith('password='):
                 parts = line.split('=', 1)
-                if len(parts) > 1:
+                if len(parts) == 2:  # Exactly 2 parts means password was provided
                     password = parts[1].strip()
                     if password:  # Only return if not empty
                         return password
