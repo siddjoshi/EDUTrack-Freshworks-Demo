@@ -639,16 +639,94 @@ This Requirements Traceability Matrix (RTM) provides end-to-end traceability fro
 
 ---
 
-## 12. Document Control Update
+## 12. Implementation Ownership & Quality Gates (Phase 4.1)
+
+### 12.1 Development Standards & Planning
+
+| Artifact | Owner | Status | Reference | Quality Gates |
+|----------|-------|--------|-----------|---------------|
+| **Coding Standards** | Engineering Lead | ✅ Defined | `docs/development/coding-standards.md` | Code reviews, linting (ESLint, StyleCop), SonarQube quality gate |
+| **Iteration Plan** | Engineering Lead | ✅ Defined | `docs/development/iteration-plan.md` | Sprint velocity tracking, burn-down charts, scope adherence |
+| **Readiness Checklist** | Engineering Lead | ✅ Defined | `docs/development/readiness-checklist.md` | Environment setup, access validation, training completion |
+
+### 12.2 Implementation Ownership by Feature
+
+| Feature ID | Feature Name | Sprint(s) | Team Owner | Backend Lead | Frontend Lead | Quality Gate |
+|------------|--------------|-----------|------------|--------------|---------------|--------------|
+| **FE-0001** | Content Ingestion & Management | 1-3 | Backend Team | Backend Lead | Frontend Lead | Unit tests ≥80%, integration tests, API documentation |
+| **FE-0002** | AI Content Generation | 2-4 | Backend Team | Backend Lead | - | AI response time <20s, hallucination detection, PII filtering |
+| **FE-0003** | Content Review Workflow | 4-5 | Backend + Frontend | Backend Lead | Frontend Lead | Review interface usability, version control validation |
+| **FE-0009** | Course Player | 5-7 | Frontend Team | - | Frontend Lead | WCAG 2.1 AA compliance, responsive design, multimedia support |
+| **FE-0010** | Interactive Assessments | 6-7 | Frontend + Backend | Backend Lead | Frontend Lead | Assessment scoring accuracy, retry logic validation |
+| **FE-0018** | User & Role Management | 3-4 | Backend + Frontend | Backend Lead | Frontend Lead | RBAC enforcement, Azure AD SSO integration |
+| **FE-0021** | Audit Logging | 8-9 | Backend Team | Backend Lead | - | 7-year retention, immutable logs, search performance |
+
+### 12.3 Quality Gates by NFR Category
+
+| NFR Category | Quality Gate | Measurement Method | Owner | Validation Sprint |
+|--------------|--------------|-------------------|-------|-------------------|
+| **Security (SEC-*)** | Penetration testing passed, zero critical vulnerabilities | SAST/DAST scans, third-party audit | Security Architect | Sprint 12 |
+| **Performance (PERF-*)** | Load testing with 10,000 concurrent users, <20s AI generation (P95) | JMeter/k6 load tests, Application Insights | Backend Team, DevOps | Sprint 12 |
+| **Availability (AVAIL-*)** | 99.9% uptime validated, DR/BC plan tested | Azure Monitor uptime, DR failover test | DevOps Lead | Sprint 12 |
+| **Compliance (COMP-*)** | GDPR compliance review, audit trail validation | Compliance audit, log retention check | Compliance Officer | Sprint 12 |
+| **Accessibility (ACCESS-*)** | WCAG 2.1 AA compliance, screen reader testing | Lighthouse audit, manual screen reader tests | Frontend Team, QA | Sprint 9 |
+| **Observability (OBS-*)** | Application Insights configured, SLO alerting operational | Telemetry validation, alert testing | DevOps Lead | Sprint 8 |
+
+### 12.4 Sprint-by-Sprint Quality Gates
+
+| Sprint | Exit Criteria | Quality Gates | Owner |
+|--------|---------------|---------------|-------|
+| **Sprint 1** | Authentication + document upload functional | Azure AD SSO working, file upload API tested, CI/CD deploying to dev | Backend Team, DevOps |
+| **Sprint 3** | Content repository searchable, RBAC implemented | Search API <500ms response, role-based access enforced | Backend Team |
+| **Sprint 7** | Course player + assessments complete | WCAG compliance, assessment scoring accurate, UAT environment ready | Frontend Team, QA |
+| **Sprint 9** | Audit logging complete, performance tuned | All critical/high UAT issues resolved, performance targets met | Backend Team, QA |
+| **Sprint 13** | MVP deployed to production | 500 pilot users onboarded, all success criteria validated, go-live checklist 100% | All Teams |
+
+### 12.5 Code Review & Approval Requirements
+
+| Code Change Type | Minimum Reviewers | Required Approvers | Quality Checks |
+|------------------|-------------------|-------------------|----------------|
+| **Feature Implementation** | 2 (1 senior + 1 peer) | Engineering Lead (if architectural) | Unit tests, integration tests, code coverage, linting |
+| **Security-Sensitive Code** | 2 + Security Architect | Security Architect | Security scan, input validation, encryption validation |
+| **Database Schema Changes** | 2 + Data Lead | Data Lead | Migration script tested, rollback plan documented |
+| **Infrastructure Changes (Bicep)** | 2 + DevOps Lead | DevOps Lead | Deployment tested in dev, parameter validation |
+| **API Contract Changes** | 2 + Backend Lead | Backend Lead + Frontend Lead (if breaking) | Swagger documentation updated, backward compatibility |
+
+### 12.6 Traceability Updates
+
+**Requirements to Implementation:**
+- All user stories linked to requirements in RTM (BRD, PRD, SRS IDs)
+- All features mapped to sprints in Iteration Plan
+- All NFRs assigned to validation owners and test plans
+- All quality gates defined with measurement methods
+
+**Implementation to Testing:**
+- Unit tests required for all business logic (≥80% backend, ≥70% frontend)
+- Integration tests for all API endpoints
+- End-to-end tests for critical user journeys
+- Performance tests for NFR validation (load, response time)
+- Security tests (SAST, DAST, penetration) before production deployment
+
+**Testing to Deployment:**
+- All tests pass in CI/CD pipeline before merge
+- Code coverage thresholds met
+- Security scans pass with zero critical vulnerabilities
+- Accessibility audits pass (Lighthouse ≥90)
+- Deployment to staging successful with smoke tests passing
+
+---
+
+## 13. Document Control Update
 
 | Version | Date | Author | Changes | Approved By |
 |---------|------|--------|---------|-------------|
 | 0.1 | 2025-11-20 | Systems Analyst | Draft - NFR Baseline | - |
 | 1.0 | 2025-11-20 | Systems Analyst | Baseline with NFR Traceability | Product Owner, QA Lead |
 | 1.1 | 2025-11-21 | Security Architect | Added Phase 3.2 design artifacts traceability | Pending |
+| 1.2 | 2025-11-21 | Engineering Lead | Added Phase 4.1 implementation ownership and quality gates | Pending |
 
 ---
 
-**Document Status:** ✅ Updated with Phase 3.2 Artifacts  
+**Document Status:** ✅ Updated with Phase 4.1 Implementation Planning  
 **Last Updated:** 2025-11-21  
-**Next Review:** Upon HLD completion (Phase 3.1)
+**Next Review:** After Sprint 3 (velocity calibration and ownership validation)
