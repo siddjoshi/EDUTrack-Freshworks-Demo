@@ -8,7 +8,6 @@ import os
 import re
 import json
 import subprocess
-from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 # Constants
@@ -42,8 +41,15 @@ class BacklogItem:
         
     def _read_file(self) -> str:
         """Read the markdown file content"""
-        with open(self.filepath, 'r', encoding='utf-8') as f:
-            return f.read()
+        try:
+            with open(self.filepath, 'r', encoding='utf-8') as f:
+                return f.read()
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Backlog file not found: {self.filepath}")
+        except PermissionError:
+            raise PermissionError(f"Permission denied reading file: {self.filepath}")
+        except Exception as e:
+            raise IOError(f"Error reading file {self.filepath}: {e}")
     
     def _determine_type(self) -> str:
         """Determine if this is an Epic, Feature, Story, or Task"""
@@ -321,12 +327,28 @@ def collect_backlog_items(backlog_dir: str) -> Dict[str, List[BacklogItem]]:
     
     for category in items.keys():
         category_dir = os.path.join(backlog_dir, category)
-        if os.path.exists(category_dir):
-            for filename in sorted(os.listdir(category_dir)):
-                if filename.endswith('.md'):
-                    filepath = os.path.join(category_dir, filename)
+        if not os.path.exists(category_dir):
+            print(f"⚠️  Warning: Directory not found: {category_dir}")
+            continue
+        
+        try:
+            filenames = sorted(os.listdir(category_dir))
+        except PermissionError:
+            print(f"❌ Error: Permission denied accessing directory: {category_dir}")
+            continue
+        except OSError as e:
+            print(f"❌ Error: Failed to list directory {category_dir}: {e}")
+            continue
+        
+        for filename in filenames:
+            if filename.endswith('.md'):
+                filepath = os.path.join(category_dir, filename)
+                try:
                     item = BacklogItem(filepath)
                     items[category].append(item)
+                except (FileNotFoundError, PermissionError, IOError) as e:
+                    print(f"⚠️  Warning: Skipping {filepath}: {e}")
+                    continue
     
     return items
 
