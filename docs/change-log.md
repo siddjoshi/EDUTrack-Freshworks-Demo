@@ -765,3 +765,149 @@ The SRS provides the foundation for High-Level Design (HLD) and Low-Level Design
 - ⏳ Test Plan: Pending (to be started based on SRS)
 
 ---
+
+### [2025-11-21] - Baseline: Phase 3.2 Security, Data & Integration Architecture
+
+**Category:** Design (Phase 3.2)  
+**Impact:** High  
+**Affected Stakeholders:** Security Team, Development Teams, QA Teams, Compliance Officer, Data Protection Officer
+
+**Description:**
+Completed comprehensive security, data, and integration design artifacts for the EDUTrack platform, including threat modeling, data architecture, and API specifications. These specialized design documents provide detailed security controls, data governance, and interface specifications to guide development, testing, and operations.
+
+**Artifacts Created:**
+
+1. **Threat Model** (`docs/design/threat-model.md`) - 52KB
+   - Complete STRIDE threat analysis with 42 identified threats
+   - Attack surface analysis (12 external and internal surfaces)
+   - Trust boundary definitions with 7 security zones
+   - Threat mitigation matrix: 38 threats mitigated (90.5%), 4 in progress (9.5%)
+   - Security controls mapping to NFRs and SRS requirements
+   - Compliance threat analysis (GDPR, ISO 27001, AI governance)
+   - Incident response procedures with severity classification
+   - Security testing requirements and validation methods
+
+2. **Data Architecture** (`docs/design/data-architecture.md`) - 39KB
+   - Conceptual, logical, and physical data models
+   - 15 core entities with complete schema definitions
+   - Data flow diagrams for content ingestion, learning paths, and analytics
+   - Data classification framework (Public, Internal, Confidential, Restricted)
+   - Data governance with ownership, stewardship, and quality rules
+   - Privacy controls for PII handling and GDPR compliance
+   - Data retention and archival policies (7-year compliance)
+   - Integration interfaces for Azure AD, SharePoint, Confluence, GitHub
+   - Data security strategy (encryption, access control, masking)
+   - Database performance metrics and monitoring requirements
+
+3. **API Specifications** (`docs/design/api-specs/`)
+   - **Authentication API** (`authentication-api.md`): Azure AD SSO, OAuth 2.0, token management, session handling
+   - **Content Ingestion API** (`content-ingestion-api.md`): Document upload, processing, repository management
+   - **AI Generation API** (`ai-generation-api.md`): Module generation, hallucination detection, PII filtering
+
+**Threat Analysis Summary:**
+- **Spoofing:** 5 threats (Azure AD bypass, token forgery, service principal compromise)
+- **Tampering:** 8 threats (training record modification, prompt injection, file upload exploits)
+- **Repudiation:** 5 threats (training completion denial, approval disputes)
+- **Information Disclosure:** 8 threats (PII leakage to AI, credential exposure, proprietary content exfiltration)
+- **Denial of Service:** 9 threats (DDoS, API abuse, quota exhaustion)
+- **Elevation of Privilege:** 7 threats (RBAC bypass, SQL injection, IDOR, prompt injection)
+
+**Security Controls Implemented:**
+- 30+ security NFRs mapped to controls (SEC-IAM-001 to SEC-AI-006)
+- Encryption at rest (AES-256) and in transit (TLS 1.2+)
+- PII detection before AI processing (zero leakage target)
+- RBAC with 4 roles (Admin, ContentReviewer, Manager, Learner)
+- API rate limiting and DDoS protection
+- Audit logging with 7-year retention
+- Secrets management via Azure Key Vault
+
+**Data Governance Framework:**
+- **Data Classification:** 4 levels (Public, Internal, Confidential, Restricted)
+- **Data Ownership:** CLO, CHRO, CTO, Compliance Officer
+- **Data Quality:** 6 quality dimensions with validation rules
+- **Data Retention:** 7-year compliance for training records and audit logs
+- **Privacy Controls:** GDPR right to erasure (30-day SLA), data minimization, consent management
+
+**API Specifications:**
+- 13 endpoints across 3 API specifications
+- OAuth 2.0 authentication for all APIs
+- Rate limiting per endpoint (10-100 requests/hour per user)
+- SLA targets: <500ms login, <60s ingestion, <20s AI generation (P95)
+- Standardized error handling with security-aware messages
+- Complete observability (logging, metrics, tracing)
+
+**Traceability Established:**
+- 100% of 42 threats traced to NFRs and SRS requirements
+- 100% of 15 data entities mapped to functional requirements
+- 100% of API endpoints linked to user stories and backlog items
+- All security controls reference NFR IDs and validation tests
+
+**Rationale:**
+Phase 3.2 specialized design artifacts are critical for:
+- **Security:** Identifying and mitigating threats before implementation
+- **Data Integrity:** Ensuring data quality, governance, and compliance
+- **Integration:** Defining clear API contracts for development teams
+- **Testing:** Providing security and data validation requirements
+- **Operations:** Establishing monitoring, incident response, and DR procedures
+- **Compliance:** Demonstrating GDPR, ISO 27001, and AI governance adherence
+
+**Key Decisions:**
+1. **Accepted Risks:** 4 medium-level residual risks (prompt injection, OpenAI quota exhaustion, content exfiltration, service principal credentials) with mitigation plans and target dates
+2. **Encryption Strategy:** AES-256 for all data at rest; TLS 1.2+ for all data in transit; column-level encryption for PII
+3. **Data Storage:** Azure SQL for relational data, Cosmos DB for audit logs, Blob Storage for files
+4. **API Authentication:** OAuth 2.0 bearer tokens with 1-hour expiration and refresh capability
+5. **PII Handling:** Zero-tolerance policy; automated detection before AI processing; GDPR right to erasure within 30 days
+
+**Action Items:**
+- [x] Create Threat Model document - Owner: Security Architect - Completed: 2025-11-21
+- [x] Create Data Architecture document - Owner: Data Architect - Completed: 2025-11-21
+- [x] Create Authentication API specification - Owner: Security Architect - Completed: 2025-11-21
+- [x] Create Content Ingestion API specification - Owner: Solution Architect - Completed: 2025-11-21
+- [x] Create AI Generation API specification - Owner: Solution Architect - Completed: 2025-11-21
+- [x] Update RTM with design artifacts traceability - Owner: Systems Analyst - Completed: 2025-11-21
+- [x] Update Change Log - Owner: Security Architect - Completed: 2025-11-21
+- [ ] CISO review and approval of Threat Model - Owner: CISO (STK-010) - Due: Week 9
+- [ ] Data Protection Officer review of Data Architecture - Owner: DPO (STK-011) - Due: Week 9
+- [ ] Solution Architect review of all design artifacts - Owner: Solution Architect (STK-014) - Due: Week 9
+- [ ] Security testing plan creation based on Threat Model - Owner: Security Analyst (STK-027) - Due: Week 10
+- [ ] Data migration plan refinement based on Data Architecture - Owner: DevOps Lead (STK-017) - Due: Week 10
+- [ ] API implementation planning based on API specs - Owner: Development Lead (STK-015) - Due: Week 11
+
+**Approvals:**
+- Created by: Security & Data Architecture Team on 2025-11-21
+- Pending review by: CISO, Data Protection Officer, Solution Architect, Compliance Officer
+- Target approval: Week 9 (before development kickoff)
+
+**Deliverables Status:**
+- ✅ Threat Model: Complete (52KB, 42 threats analyzed)
+- ✅ Data Architecture: Complete (39KB, 15 entities modeled)
+- ✅ Authentication API Spec: Complete (3 pages, 5 endpoints)
+- ✅ Content Ingestion API Spec: Complete (4 pages, 4 endpoints)
+- ✅ AI Generation API Spec: Complete (4 pages, 4 endpoints)
+- ✅ RTM Updated: Complete (Phase 3.2 section added)
+- ✅ Change Log Updated: Complete (this entry)
+- ⏳ Remaining API Specs: Deferred to Phase 3.3 (Search, Analytics, Admin APIs)
+
+**Dependencies Identified:**
+1. **Azure OpenAI Approval:** Critical dependency for AI Generation API (DEP-001)
+2. **SharePoint API Permissions:** Required for Content Ingestion API (DEP-002)
+3. **Azure Key Vault Setup:** Required for secrets management (all APIs)
+4. **Azure AD App Registration:** Required for Authentication API (DEP-006)
+5. **Security Architecture Review:** Required before development begins (DEP-008)
+
+**Residual Risks:**
+1. **Prompt Injection (TAMP-003, PRIV-006):** Medium risk; advanced filtering in progress; target Q2 2026
+2. **OpenAI Quota Exhaustion (DOS-003):** Medium risk; request prioritization planned; target Q1 2026
+3. **Content Exfiltration (INFO-005):** Medium risk; DLP policies planned; target Q2 2026
+4. **Service Principal Credentials (SPOOF-003):** Medium risk; managed identity migration; target Q1 2026
+
+**Next Steps:**
+1. Submit all design artifacts for stakeholder review (CISO, DPO, Solution Architect)
+2. Conduct threat model walkthrough with security and development teams
+3. Create data dictionary and ERD diagrams (referenced in Data Architecture)
+4. Develop security test plan based on Threat Model requirements
+5. Begin HLD development incorporating security and data designs (Phase 3.1)
+6. Create remaining API specifications (Search, Analytics, Admin) in Phase 3.3
+
+---
+

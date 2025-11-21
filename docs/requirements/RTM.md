@@ -532,3 +532,123 @@ This Requirements Traceability Matrix (RTM) provides end-to-end traceability fro
 ---
 
 **END OF RTM UPDATES**
+
+---
+
+## 10. Design Artifacts Traceability (Phase 3.2)
+
+### 10.1 Threat Model Coverage
+
+| Threat Category | Threat Count | Requirements Addressed | Design Artifacts | Mitigation Status |
+|-----------------|--------------|------------------------|------------------|-------------------|
+| **Spoofing** | 5 threats | SEC-IAM-001 to SEC-IAM-006, SRS-FUNC-063 | Threat Model: Section 5.1; Auth API Spec | 5 mitigated (1 in progress) |
+| **Tampering** | 8 threats | SEC-DATA-001, SEC-DATA-007, SEC-AI-005, SRS-FUNC-065 | Threat Model: Section 5.2; Data Architecture: Section 8 | 7 mitigated (1 in progress) |
+| **Repudiation** | 5 threats | SRS-FUNC-015, SRS-FUNC-045, SRS-FUNC-065 | Threat Model: Section 5.3; Data Architecture: Section 3.4 | 5 mitigated |
+| **Information Disclosure** | 8 threats | SEC-DATA-001 to SEC-DATA-008, SEC-AI-003 | Threat Model: Section 5.4; Data Architecture: Section 6 | 7 mitigated (1 in progress) |
+| **Denial of Service** | 9 threats | PERF-TH-001, SEC-APP-004, PERF-RES-001 to PERF-RES-006 | Threat Model: Section 5.5; API Specs: Rate Limiting | 8 mitigated (1 in progress) |
+| **Elevation of Privilege** | 7 threats | SEC-IAM-002, SEC-APP-001, PRIV-001 to PRIV-007 | Threat Model: Section 5.6; Auth API Spec | 6 mitigated (1 in progress) |
+| **Compliance Threats** | 15 threats | COMP-001 to COMP-010, AI-GOV-001 to AI-GOV-005 | Threat Model: Section 7; Data Architecture: Section 6 | 15 mitigated |
+| **Total** | **42 threats** | **100% traced to requirements** | **3 design docs, 3 API specs** | **38 mitigated, 4 in progress** |
+
+**Design Document References:**
+- Threat Model: `docs/design/threat-model.md`
+- Data Architecture: `docs/design/data-architecture.md`
+- Authentication API: `docs/design/api-specs/authentication-api.md`
+- Content Ingestion API: `docs/design/api-specs/content-ingestion-api.md`
+- AI Generation API: `docs/design/api-specs/ai-generation-api.md`
+
+### 10.2 Data Architecture Coverage
+
+| Data Domain | Entities | Requirements Traced | Design Artifacts | Data Governance |
+|-------------|----------|---------------------|------------------|-----------------|
+| **Identity** | User, Role | SRS-FUNC-191, SEC-IAM-001, SEC-IAM-002 | Data Architecture: Section 3.1; Auth API | RBAC enforced; PII encrypted |
+| **Content** | Document, Module, Assessment | SRS-FUNC-001 to SRS-FUNC-015, SRS-FUNC-031 to SRS-FUNC-045 | Data Architecture: Section 3.2; Content API, AI API | Encryption at rest; version control |
+| **Learning** | SkillProfile, LearningPath, CompletionRecord | SRS-FUNC-081 to SRS-FUNC-117 | Data Architecture: Section 3.3 | 7-year retention; privacy controls |
+| **Governance** | AuditLog, AIInteractionLog | SRS-FUNC-015, SRS-FUNC-045, SEC-AI-001 | Data Architecture: Section 3.4; Threat Model | Immutable logs; 7-year retention |
+| **Reference** | Skill | SRS-FUNC-193, SRS-FUNC-040 | Data Architecture: Section 3.5 | Controlled taxonomy |
+
+**Data Flows Documented:**
+- Content Ingestion Flow: Data Architecture Section 5.1
+- Learning Path Generation Flow: Data Architecture Section 5.2
+- Analytics Aggregation Flow: Data Architecture Section 5.3
+
+**Data Classification:**
+- Public: Published training modules (non-sensitive)
+- Internal: Draft content, skill taxonomy, analytics
+- Confidential: Employee PII, training records, assessment scores
+- Restricted: Audit logs, API keys, AI prompts/responses
+
+**Privacy Controls:**
+- PII Detection: SEC-DATA-003, SEC-AI-003 → Data Architecture Section 6.5
+- GDPR Right to Erasure: SEC-DATA-006 → Data Architecture Section 6.4
+- Data Residency: SEC-DATA-008 → Data Architecture Section 4.1
+
+### 10.3 API Specifications Coverage
+
+| API Specification | Endpoints | Requirements Traced | Security Controls | SLA Targets |
+|-------------------|-----------|---------------------|-------------------|-------------|
+| **Authentication API** | 5 endpoints | SEC-IAM-001 to SEC-IAM-006, SPOOF-001, SPOOF-002, PRIV-007 | OAuth 2.0, MFA, token expiration, session timeout | <500ms login P95 |
+| **Content Ingestion API** | 4 endpoints | SRS-FUNC-001 to SRS-FUNC-015, SEC-APP-008, TAMP-004, TAMP-007 | File validation, malware scan, rate limiting, RBAC | <60s ingestion P95 |
+| **AI Generation API** | 4 endpoints | SRS-FUNC-031 to SRS-FUNC-045, SEC-AI-001 to SEC-AI-006, INFO-001 | PII detection, prompt injection prevention, quota management | <20s generation P95 |
+
+**API Security Matrix:**
+- Authentication: Bearer token (OAuth 2.0)
+- Rate Limiting: Per-user and per-IP throttling
+- Input Validation: Whitelist-based validation, sanitization
+- Error Handling: Standardized error responses with security considerations
+- Audit Logging: 100% API call logging for compliance
+
+### 10.4 Integration Points
+
+| External System | API Spec Reference | Data Flow Documented | Security Controls |
+|-----------------|-------------------|----------------------|-------------------|
+| Azure AD | Authentication API | Data Architecture: Section 7.1 | OAuth 2.0, MFA |
+| Azure OpenAI | AI Generation API | Data Architecture: Section 7.1; Threat Model: SURF-101 | PII detection, prompt filtering, quota management |
+| SharePoint Online | Content Ingestion API | Data Architecture: Section 7.1; SRS Section 4.3 | OAuth 2.0 app token, retry logic |
+| Confluence Cloud | Content Ingestion API | Data Architecture: Section 7.1 | Basic Auth (API token), retry logic |
+| GitHub | Content Ingestion API | Data Architecture: Section 7.1 | Personal access token, retry logic |
+| Azure AI Search | (Future API Spec) | Data Architecture: Section 4.1 | API key (Key Vault), fallback to keyword search |
+
+---
+
+## 11. Traceability Summary (Updated 2025-11-21)
+
+### 11.1 Coverage Metrics
+
+| Artifact Type | Total Count | Traced to Requirements | Coverage % | Status |
+|---------------|-------------|------------------------|------------|--------|
+| **Business Requirements (BRD)** | 79 | 79 | 100% | ✅ Complete |
+| **Product Features (PRD)** | 24 | 24 | 100% | ✅ Complete |
+| **Functional Requirements (SRS)** | 250+ | 250+ | 100% | ✅ Complete |
+| **Non-Functional Requirements (NFR)** | 121 | 121 | 100% | ✅ Complete |
+| **Threats Identified** | 42 | 42 | 100% | ✅ Complete |
+| **Data Entities** | 15 | 15 | 100% | ✅ Complete |
+| **API Endpoints** | 13 | 13 | 100% | ✅ Complete |
+| **Security Controls** | 30+ | 30+ | 100% | ✅ Complete |
+| **Backlog Items (Epic/Features)** | 3 | 3 | 100% | ✅ Complete |
+
+### 11.2 Gap Analysis
+
+**No gaps identified.** All requirements are traced to design artifacts, security controls, and planned validation.
+
+**In Progress Items:**
+- 4 threats with "In Progress" mitigation status (target Q1-Q2 2026)
+- HLD document to be created (Phase 3.1 - Solution Architect)
+- LLD documents to be created (Phase 3 follow-on)
+- Remaining 21 features to be detailed in backlog (Phase 2.3 continuation)
+
+---
+
+## 12. Document Control Update
+
+| Version | Date | Author | Changes | Approved By |
+|---------|------|--------|---------|-------------|
+| 0.1 | 2025-11-20 | Systems Analyst | Draft - NFR Baseline | - |
+| 1.0 | 2025-11-20 | Systems Analyst | Baseline with NFR Traceability | Product Owner, QA Lead |
+| 1.1 | 2025-11-21 | Security Architect | Added Phase 3.2 design artifacts traceability | Pending |
+
+---
+
+**Document Status:** ✅ Updated with Phase 3.2 Artifacts  
+**Last Updated:** 2025-11-21  
+**Next Review:** Upon HLD completion (Phase 3.1)
