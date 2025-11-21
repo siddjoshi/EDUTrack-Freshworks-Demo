@@ -716,6 +716,119 @@ This Requirements Traceability Matrix (RTM) provides end-to-end traceability fro
 
 ---
 
+## 12. CI/CD Pipeline Coverage & Evidence Mapping
+
+### 12.1 Pipeline Stages to NFR Traceability
+
+This section maps CI/CD pipeline stages and quality gates to specific NFRs, ensuring comprehensive automation and evidence capture for compliance and audit.
+
+#### 12.1.1 Build & Compilation Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| MAINT-BUILD-001 | Automated builds within 10 minutes | Stage 2: Build & Compile | Build duration <10 min | Build logs, timing metrics | Azure Pipelines |
+| MAINT-CODE-001 | Code quality standards enforced | Stage 2: Build & Compile | Zero compiler warnings | Compiler output, build logs | .NET Compiler, TypeScript |
+| MAINT-TOOL-003 | Infrastructure as Code | IaC Pipeline: Bicep Validation | Bicep lint pass, ARM validation | Bicep build logs, policy compliance | Azure Bicep, Azure Policy |
+
+#### 12.1.2 Testing Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| MAINT-TEST-001 | Backend coverage ≥80%, Frontend ≥70% | Stage 3.1: Unit Tests | Coverage thresholds enforced | Code coverage reports | xUnit + Coverlet, Jest |
+| MAINT-TEST-002 | Integration testing | Stage 3.2: Integration Tests | 100% integration tests passing | Test results, logs | xUnit + TestContainers |
+| USA-ACCESS-001 | WCAG 2.1 AA compliance | Stage 3.3: E2E Tests | Zero Axe violations, Lighthouse ≥90 | Accessibility reports | Axe-core, Lighthouse |
+| USA-BROWSER-001 | Cross-browser compatibility | Stage 3.3: E2E Tests | Tests pass on Chrome, Edge, Firefox | E2E test results | Playwright |
+| PERF-LAT-001 to PERF-LAT-010 | Performance latency targets | Stage 8.2: Performance Tests (STAGING) | P95 latency <2s (varies by NFR) | Performance test reports | Azure Load Testing, JMeter |
+| PERF-TH-001 | 10,000 concurrent users | Stage 8.2: Performance Tests (STAGING) | Load test 1,000 concurrent users (STAGING scale) | Load test results | Azure Load Testing |
+
+#### 12.1.3 Static Analysis & Code Quality Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| MAINT-CODE-001 | Code quality: A rating | Stage 4.1: SonarQube Analysis | Maintainability rating: A | SonarQube quality gate report | SonarQube Cloud |
+| MAINT-CODE-002 | Technical debt <50 code smells | Stage 4.1: SonarQube Analysis | <50 code smells | SonarQube analysis report | SonarQube Cloud |
+| MAINT-CODE-001 | Linting & formatting standards | Stage 4.2: Linting & Formatting | Zero lint errors | ESLint, StyleCop, Prettier reports | ESLint, StyleCop, Prettier |
+
+#### 12.1.4 Security Scanning Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| SEC-APP-007 | Dependency vulnerability scanning | Stage 5.2: Dependency Scanning | Zero Critical/High vulnerabilities | Vulnerability scan reports | WhiteSource Bolt, Dependabot, Trivy |
+| SEC-APP-001 | Input validation (SAST) | Stage 5.1: SAST | Zero Critical/High vulnerabilities | SAST scan reports | CodeQL, Checkmarx |
+| SEC-APP-005 | Secrets detection | Stage 5.3: Secrets Detection | Zero secrets detected | Secrets scan reports | GitGuardian, Gitleaks |
+| SEC-APP-002 | CSRF protection (DAST) | Stage 8.3: DAST (STAGING) | Zero Critical/High vulnerabilities | DAST scan reports | OWASP ZAP |
+| SEC-DATA-001 | Container vulnerability scanning | Stage 5.4: Container Scanning | Zero Critical/High vulnerabilities | Container scan reports | Trivy, Docker Bench |
+
+#### 12.1.5 Artifact Publishing & SBOM Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| COMP-SBOM-001 | SBOM generation for all artifacts | Stage 6: Artifact Publishing | SBOM generated (CycloneDX + SPDX) | SBOM files (JSON) | CycloneDX .NET/npm, Syft |
+| COMP-LICENSE-001 | License compliance validation | Stage 6: Artifact Publishing | Zero restricted licenses | License compliance reports | FOSSA, WhiteSource |
+| COMP-SBOM-007 | Build provenance (SLSA) | Stage 6: Artifact Publishing | SLSA provenance generated | Provenance JSON files | Custom SLSA script |
+| COMP-SBOM-008 | Cryptographic attestation | Stage 6: Artifact Publishing | SBOM signed | Signature files (.sig) | Azure Key Vault, OpenSSL |
+| MAINT-TOOL-001 | Artifact management | Stage 6: Artifact Publishing | Artifacts published to Azure Artifacts | Artifact metadata, retention | Azure Artifacts, ACR |
+
+#### 12.1.6 Deployment & Promotion Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| REL-DEPLOY-001 | Zero-downtime deployments | Stage 7.2: Deployment (STAGING/PROD) | Blue-green deployment successful | Deployment logs, slot swap logs | Azure App Service |
+| REL-DEPLOY-002 | Rollback capability | Stage 7.2: Deployment | Rollback tested, RTO <30 min | Rollback test results | Azure App Service, Git |
+| REL-DEPLOY-003 | Deployment frequency (weekly to PROD) | Stage 7.2: Deployment (PROD) | CAB approval, scheduled deployment | Deployment calendar, approval records | Azure Pipelines Approvals |
+| REL-RES-002 | Database backup and recovery | Stage 7.3: Database Migration | Automated backup before migration | Backup logs, restore test results | Azure SQL automated backups |
+
+#### 12.1.7 Post-Deployment Validation & Monitoring Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| REL-AVAIL-001 | 99.5% uptime SLA | Stage 8.1: Smoke Tests | Health endpoint responding | Health check logs | Application Insights |
+| OBS-LOG-001 | Structured logging | Stage 8.1: Smoke Tests | Logs flowing to Application Insights | Log entries, log volume metrics | Application Insights, Serilog |
+| OBS-LOG-002 | Deployment tracking | Stage 8: Post-Deployment Monitoring | Deployment annotation created | Release annotations | Application Insights |
+| OBS-MON-001 | Real-time monitoring | Stage 8.3: Post-Deployment Monitoring | Alerts configured, dashboards visible | Alert configurations, dashboards | Azure Monitor, Application Insights |
+| OBS-ALERT-001 | Alerting | Stage 8.3: Post-Deployment Monitoring | Alerts firing correctly | Alert test results, notification logs | Azure Monitor, PagerDuty |
+
+#### 12.1.8 Compliance & Audit Stage
+
+| NFR ID | NFR Requirement | Pipeline Stage | Quality Gate | Evidence | Tool/Artefact |
+|--------|----------------|----------------|--------------|----------|---------------|
+| COMP-AUDIT-001 | Audit logs retained 2 years | All stages | Audit logs captured | Pipeline run logs (2 years), deployment approvals | Azure Pipelines, Cosmos DB |
+| COMP-CERT-001 | ISO 27001 compliance | All stages | Security controls enforced | Compliance reports, policy validation | Azure Policy, SonarQube |
+| COMP-CERT-002 | SOC 2 compliance | All stages | Audit trail completeness | Audit logs, approval records | Azure Pipelines, Azure AD |
+| COMP-CERT-003 | GDPR compliance | Data handling in all environments | PII detection, data obfuscation | Data privacy reports, obfuscation logs | Custom PII detection, Azure Data Factory |
+
+### 12.2 Environment-Specific Evidence & Coverage
+
+| Environment | NFRs Validated | Pipeline Evidence | Deployment Evidence | Monitoring Evidence |
+|-------------|----------------|-------------------|---------------------|---------------------|
+| **DEV** | Integration, early functional validation | CI pipeline logs, integration test results | Deployment logs, smoke tests | Application Insights (1 GB/day) |
+| **TEST** | Full regression, accessibility, cross-browser | CI pipeline logs, E2E test results, accessibility reports | Deployment logs, smoke tests | Application Insights (2 GB/day) |
+| **STAGING** | Performance, security (DAST), UAT readiness | Performance test results, DAST reports, UAT approvals | Blue-green deployment logs, soak test results | Application Insights (5 GB/day) |
+| **PROD** | Production readiness, SLA monitoring | CAB approval, production smoke tests, SLA reports | Blue-green deployment logs, canary monitoring | Application Insights (10 GB/day), SLA dashboards |
+
+### 12.3 Quality Gate Bypass & Approval Tracking
+
+| Quality Gate | Bypass Allowed | Approver | Evidence Required | Tracking |
+|--------------|----------------|----------|-------------------|----------|
+| Compiler Warnings | No | N/A | N/A | Pipeline failure |
+| Code Coverage | No | N/A | N/A | Pipeline failure |
+| SonarQube Quality Gate | Yes (with remediation plan) | Engineering Lead | ADR documenting remediation plan | Azure DevOps work item |
+| SAST Critical/High | Yes (false positive only) | Security Architect | False positive analysis, VEX statement | Azure DevOps work item |
+| Dependency Critical/High | Yes (false positive only) | Security Architect | False positive analysis, VEX statement | Azure DevOps work item |
+| Secrets Detection | No | N/A | N/A | Pipeline failure |
+
+### 12.4 CI/CD Documentation & Tooling References
+
+| Artefact | Location | Purpose | Owner |
+|----------|----------|---------|-------|
+| **CI/CD Specification** | `docs/development/cicd-spec.md` | Complete pipeline architecture, stages, quality gates, tooling | DevOps Lead |
+| **Environment Matrix** | `docs/development/environment-matrix.md` | Environment configurations, access controls, compliance | DevOps Lead |
+| **SBOM Strategy** | `docs/development/sbom-strategy.md` | SBOM generation, vulnerability tracking, license compliance | DevOps Lead |
+| **Pipeline YAML Templates** | `.azure-pipelines/` | Executable pipeline definitions | DevOps Team |
+| **Bicep Infrastructure** | `infrastructure/` | Infrastructure as Code for all environments | DevOps Team |
+
+---
+
 ## 13. Document Control Update
 
 | Version | Date | Author | Changes | Approved By |
@@ -724,9 +837,10 @@ This Requirements Traceability Matrix (RTM) provides end-to-end traceability fro
 | 1.0 | 2025-11-20 | Systems Analyst | Baseline with NFR Traceability | Product Owner, QA Lead |
 | 1.1 | 2025-11-21 | Security Architect | Added Phase 3.2 design artifacts traceability | Pending |
 | 1.2 | 2025-11-21 | Engineering Lead | Added Phase 4.1 implementation ownership and quality gates | Pending |
+| 1.3 | 2025-11-21 | DevOps Lead | Added Section 12: CI/CD Pipeline Coverage & Evidence Mapping | Pending |
 
 ---
 
-**Document Status:** ✅ Updated with Phase 4.1 Implementation Planning  
+**Document Status:** ✅ Updated with Phase 4.2 CI/CD Pipeline Traceability  
 **Last Updated:** 2025-11-21  
-**Next Review:** After Sprint 3 (velocity calibration and ownership validation)
+**Next Review:** After Sprint 1 (pipeline implementation and quality gate validation)
