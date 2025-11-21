@@ -11,6 +11,18 @@ import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+# Constants
+DEFAULT_REPO = os.environ.get('GITHUB_REPOSITORY', 'siddjoshi/EDUTrack-Demo')
+CONTENT_TRUNCATE_LENGTH = 2000
+
+# Compiled regex patterns for performance
+ITEM_ID_PATTERN = re.compile(r'\|\s*(?:Epic ID|Feature ID|Story ID|Task ID)\s*\|\s*([A-Z]+-\d+)')
+TITLE_PATTERN = re.compile(r'^#\s+(.+)$', re.MULTILINE)
+TARGET_RELEASE_PATTERN = re.compile(r'\|\s*Target Release / PI\s*\|\s*([^|]+)\|')
+STATUS_PATTERN = re.compile(r'\|\s*(?:Current )?Status\s*\|\s*([^|]+)\|')
+ASSIGNED_TO_PATTERN = re.compile(r'\|\s*Assigned To\s*\|\s*([^|]+)\|')
+STORY_POINTS_PATTERN = re.compile(r'\|\s*Story Points\s*\|\s*(\d+)')
+
 class BacklogItem:
     """Represents a backlog item (Epic, Feature, Story, or Task)"""
     
@@ -48,7 +60,7 @@ class BacklogItem:
     def _extract_id(self) -> str:
         """Extract the item ID (e.g., EP-0001, FE-0001, US-0001, TSK-0001)"""
         # Look for ID in metadata table
-        match = re.search(r'\|\s*(?:Epic ID|Feature ID|Story ID|Task ID)\s*\|\s*([A-Z]+-\d+)', self.content)
+        match = ITEM_ID_PATTERN.search(self.content)
         if match:
             return match.group(1)
         
@@ -62,7 +74,7 @@ class BacklogItem:
     
     def _extract_title(self) -> str:
         """Extract the title from the first heading"""
-        match = re.search(r'^#\s+(.+)$', self.content, re.MULTILINE)
+        match = TITLE_PATTERN.search(self.content)
         if match:
             title = match.group(1).strip()
             # Remove prefixes like "Epic Blueprint:", "Feature Specification:", etc.
@@ -74,25 +86,18 @@ class BacklogItem:
         """Extract metadata from the document"""
         metadata = {}
         
-        # Extract target release/sprint
-        match = re.search(r'\|\s*Target Release / PI\s*\|\s*([^|]+)\|', self.content)
-        if match:
-            metadata['target_release'] = match.group(1).strip()
+        # Define metadata field patterns
+        metadata_fields = [
+            ('target_release', TARGET_RELEASE_PATTERN),
+            ('status', STATUS_PATTERN),
+            ('assigned_to', ASSIGNED_TO_PATTERN),
+            ('story_points', STORY_POINTS_PATTERN),
+        ]
         
-        # Extract status
-        match = re.search(r'\|\s*(?:Current )?Status\s*\|\s*([^|]+)\|', self.content)
-        if match:
-            metadata['status'] = match.group(1).strip()
-        
-        # Extract assignee
-        match = re.search(r'\|\s*Assigned To\s*\|\s*([^|]+)\|', self.content)
-        if match:
-            metadata['assigned_to'] = match.group(1).strip()
-        
-        # Extract story points
-        match = re.search(r'\|\s*Story Points\s*\|\s*(\d+)', self.content)
-        if match:
-            metadata['story_points'] = match.group(1).strip()
+        for field_name, pattern in metadata_fields:
+            match = pattern.search(self.content)
+            if match:
+                metadata[field_name] = match.group(1).strip()
         
         return metadata
     
@@ -238,7 +243,7 @@ class BacklogItem:
         # Add link to full document
         body_parts.append(f"\n---\n📄 **Full Documentation:** See [`{os.path.basename(self.filepath)}`]({os.path.relpath(self.filepath)})")
         
-        # Add truncated content (first 2000 characters of main content)
+        # Add truncated content (first CONTENT_TRUNCATE_LENGTH characters of main content)
         # Remove metadata tables and keep main content
         content_parts = re.split(r'##\s+\d+\.', self.content)
         if len(content_parts) > 1:
@@ -246,7 +251,7 @@ class BacklogItem:
             for part in content_parts[1:5]:  # Check first few sections
                 if any(keyword in part.lower() for keyword in ['executive summary', 'objective', 'business context', 'description']):
                     # Clean up the section
-                    section = part[:2000].strip()
+                    section = part[:CONTENT_TRUNCATE_LENGTH].strip()
                     body_parts.append(f"\n## Overview\n{section}")
                     break
         
@@ -288,7 +293,7 @@ def create_github_issue(item: BacklogItem, parent_issue: Optional[int] = None, r
 
 
 def get_github_repo() -> str:
-    """Get the GitHub repository from git remote"""
+    """Get the GitHub repository from git remote or environment"""
     try:
         result = subprocess.run(
             ['git', 'config', '--get', 'remote.origin.url'],
@@ -302,7 +307,7 @@ def get_github_repo() -> str:
     except subprocess.CalledProcessError:
         pass
     
-    return 'siddjoshi/EDUTrack-Demo'  # Default fallback
+    return DEFAULT_REPO
 
 
 def collect_backlog_items(backlog_dir: str) -> Dict[str, List[BacklogItem]]:
@@ -374,9 +379,14 @@ def create_all_issues(backlog_dir: str, dry_run: bool = False):
     
     # Save mapping to file
     mapping_file = os.path.join(backlog_dir, 'issue-mapping.json')
-    with open(mapping_file, 'w') as f:
-        json.dump(issue_map, f, indent=2)
-    print(f"\n💾 Saved issue mapping to: {mapping_file}")
+    try:
+        os.makedirs(os.path.dirname(mapping_file), exist_ok=True)
+        with open(mapping_file, 'w') as f:
+            json.dump(issue_map, f, indent=2)
+        print(f"\n💾 Saved issue mapping to: {mapping_file}")
+    except (IOError, OSError) as e:
+        print(f"⚠️  Warning: Could not save issue mapping to {mapping_file}: {e}")
+        print(f"   Issue mapping: {json.dumps(issue_map, indent=2)}")
 
 
 def main():

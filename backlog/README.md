@@ -58,10 +58,10 @@ backlog/
 
 ```
 EP-0001 (Epic: AI-Powered Learning & Training Platform)
-└── FE-0001 (Feature: Content Ingestion & Management)
-    └── US-0001 (Story: L&D Admin Document Upload)
-        ├── TSK-0001 (Task: Provision Blob Storage) [PARALLEL]
-        └── TSK-0002 (Task: Database Schema) [PARALLEL]
+├── FE-0001 (Feature: Content Ingestion & Management)
+│   └── US-0001 (Story: L&D Admin Document Upload)
+│       ├── TSK-0001 (Task: Provision Blob Storage) [PARALLEL]
+│       └── TSK-0002 (Task: Database Schema) [PARALLEL]
 └── FE-0002 (Feature: AI Content Generation)
 ```
 
