@@ -335,3 +335,200 @@ This Requirements Traceability Matrix (RTM) provides end-to-end traceability fro
 **NFR Coverage:** 100% (121/121 NFRs defined and traced)  
 **Last Updated:** 2025-11-20  
 **Next Review:** 2025-12-20 (Monthly RTM Review)
+
+## 2. BRD/PRD to SRS Functional Requirement Traceability
+
+### Content Management & Ingestion
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-004 | Content ingestion from SharePoint, Confluence, GitHub | SRS-FUNC-001, SRS-FUNC-002, SRS-FUNC-003, SRS-FUNC-004 | ✅ Defined | SharePoint + local upload in MVP; Confluence/GitHub Phase 3 |
+| BRD-FR-005 | Text extraction with >95% accuracy | SRS-FUNC-005, SRS-FUNC-006 | ✅ Defined | Preserves formatting (headings, lists, code blocks) |
+| BRD-FR-006 | Content repository with metadata | SRS-FUNC-009, SRS-FUNC-012 | ✅ Defined | Searchable metadata; version control |
+| BRD-FR-007 | Deduplication and versioning | SRS-FUNC-007, SRS-FUNC-011 | ✅ Defined | SHA-256 hash-based deduplication |
+| PRD-F-001 | Content Ingestion feature | SRS-FUNC-001 to SRS-FUNC-015 | ✅ Defined | Complete feature specification |
+| PRD-F-004 | Content Repository | SRS-FUNC-012, SRS-FUNC-013 | ✅ Defined | Lifecycle management included |
+
+### AI Content Generation
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-008, BRD-OBJ-01 | AI generation <20s; 70% time reduction | SRS-FUNC-031 | ✅ Defined | Azure OpenAI GPT-4; <20s P95 |
+| BRD-FR-009 | Generated module structure (summary, objectives, concepts) | SRS-FUNC-032, SRS-FUNC-033, SRS-FUNC-034, SRS-FUNC-035, SRS-FUNC-036 | ✅ Defined | Complete module generation spec |
+| BRD-FR-010 | Auto-generated assessments (10+ MCQ, 3+ scenario) | SRS-FUNC-037, SRS-FUNC-038, SRS-FUNC-039 | ✅ Defined | Questions with explanations |
+| BRD-FR-011 | Auto-tag skills from content | SRS-FUNC-040 | ✅ Defined | 3-10 skills; mapped to taxonomy |
+| BRD-FR-012 | Recommend follow-up learning | SRS-FUNC-041 | ✅ Defined | 3-5 recommendations per module |
+| BRD-FR-039, BRD-OBJ-12 | Hallucination detection | SRS-FUNC-042 | ✅ Defined | 0-100% score; >30% flagged |
+| PRD-F-002 | AI Content Generation feature | SRS-FUNC-031 to SRS-FUNC-045 | ✅ Defined | Complete feature specification |
+| PRD-US-002-01 | L&D Admin uploads document, AI generates module | SRS-FUNC-004, SRS-FUNC-031 to SRS-FUNC-036 | ✅ Defined | End-to-end user story mapped |
+| PRD-US-002-02 | AI generates 10+ MCQs and 3+ scenario questions | SRS-FUNC-037, SRS-FUNC-038, SRS-FUNC-039 | ✅ Defined | Assessment generation |
+| PRD-US-002-03 | Auto-tag modules with skills | SRS-FUNC-040 | ✅ Defined | Skill taxonomy integration |
+
+### Content Review & Governance
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-020 | SME review workflow | SRS-FUNC-061 | ✅ Defined | Assignment, notification, interface |
+| BRD-FR-021 | Approve/reject/edit capability | SRS-FUNC-063 | ✅ Defined | Inline editing with WYSIWYG |
+| BRD-FR-022 | Version control and audit trail | SRS-FUNC-065 | ✅ Defined | All versions retained |
+| BRD-OBJ-12 | >95% SME approval rate; <30 min review time | SRS-FUNC-064, SRS-FUNC-067 | ✅ Defined | Quality and efficiency metrics |
+| PRD-F-003 | Content Review Workflow feature | SRS-FUNC-061 to SRS-FUNC-067 | ✅ Defined | Complete workflow specification |
+
+### Personalized Learning
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-016 | Individual skill profiles for 10,000 employees | SRS-FUNC-081 | ✅ Defined | 5 proficiency levels |
+| BRD-FR-017 | Dynamic path generation (role + skill gaps) | SRS-FUNC-082 | ✅ Defined | Auto-generated on first login |
+| BRD-FR-018 | Real-time path adjustments from assessments | SRS-FUNC-083 | ✅ Defined | Failed assessments add remedial modules |
+| BRD-FR-019 | Manager assign mandatory training | SRS-FUNC-084 | ✅ Defined | Due dates and automated reminders |
+| BRD-OBJ-04 | 75% path completion rate | SRS-FUNC-085 | ✅ Defined | Tracked and dashboarded |
+| BRD-FR-013 | Microsoft Learn integration | SRS-FUNC-086 | ✅ Defined | Skill mapping and recommendations |
+| PRD-F-005 | Personalized Learning Paths feature | SRS-FUNC-081 to SRS-FUNC-086 | ✅ Defined | Complete personalization spec |
+| PRD-F-006 | Skill Profiles | SRS-FUNC-081 | ✅ Defined | Profile maintenance |
+| PRD-F-007 | Microsoft Learn Integration | SRS-FUNC-086 | ✅ Defined | External content integration |
+| PRD-F-008 | Learning Path Assignment | SRS-FUNC-084 | ✅ Defined | Manager capabilities |
+
+### Course Delivery & Assessment
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-023 | Responsive web interface; multimedia support | SRS-FUNC-111, SRS-FUNC-112 | ✅ Defined | Desktop + mobile; text/code/diagrams/video |
+| BRD-FR-024 | Interactive assessments with instant scoring | SRS-FUNC-113 | ✅ Defined | MCQ + scenario questions |
+| BRD-FR-025 | Unlimited retry capability | SRS-FUNC-114 | ✅ Defined | Explanations for incorrect answers |
+| BRD-FR-026 | Progress tracking and auto-save | SRS-FUNC-116 | ✅ Defined | Auto-save every 30 seconds |
+| BRD-FR-027 | Time spent tracking | SRS-FUNC-117 | ✅ Defined | Contributes to analytics |
+| PRD-BR-003 | Minimum 70% score for completion | SRS-FUNC-115 | ✅ Defined | Business rule enforcement |
+| PRD-F-009 | Course Player feature | SRS-FUNC-111 to SRS-FUNC-117 | ✅ Defined | Complete delivery specification |
+| PRD-F-010 | Interactive Assessments | SRS-FUNC-113, SRS-FUNC-114, SRS-FUNC-115 | ✅ Defined | Assessment capabilities |
+| PRD-F-011 | Progress Tracking | SRS-FUNC-116, SRS-FUNC-117 | ✅ Defined | Auto-save and time tracking |
+
+### Search & Discovery
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-032, BRD-OBJ-06 | Semantic search; <2 min discovery time | SRS-FUNC-141 | ✅ Defined | AI embeddings; intent understanding |
+| BRD-FR-033 | <500ms search response (P95) | SRS-FUNC-142 | ✅ Defined | Performance requirement |
+| BRD-FR-034 | Search across internal and MS Learn | SRS-FUNC-143 | ✅ Defined | All content types searchable |
+| PRD-F-012 | Semantic Search feature | SRS-FUNC-141 to SRS-FUNC-145 | ✅ Defined | Complete search specification |
+| PRD-KPI-012 | >90% search success rate | SRS-FUNC-145 | ✅ Defined | Click-through rate metric |
+
+### Analytics & Reporting
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-028 | Multi-level dashboards (learner, manager, L&D, executive) | SRS-FUNC-161, SRS-FUNC-162, SRS-FUNC-163, SRS-FUNC-164 | ✅ Defined | All 4 dashboard types specified |
+| BRD-FR-029 | CSV/Excel export | SRS-FUNC-165 | ✅ Defined | All dashboards exportable |
+| BRD-FR-030, BRD-FR-053 | Compliance reports (7-year history) | SRS-FUNC-166 | ✅ Defined | On-demand audit reports |
+| PRD-F-014 | Learner Dashboard | SRS-FUNC-161 | ✅ Defined | Personal progress and recommendations |
+| PRD-F-015 | Manager Dashboard | SRS-FUNC-162 | ✅ Defined | Team heatmap and compliance |
+| PRD-F-016 | L&D Admin Dashboard | SRS-FUNC-163 | ✅ Defined | Platform usage and content effectiveness |
+| PRD-F-017 | Executive Dashboard | SRS-FUNC-164 | ✅ Defined | Learning Impact Index and ROI |
+
+### Platform Administration
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-035 | User and role management; bulk import | SRS-FUNC-191 | ✅ Defined | CRUD + bulk ops (1000 users <5 min) |
+| BRD-FR-051 | RBAC with 4 roles | SRS-FUNC-192 | ✅ Defined | Admin, ContentReviewer, Learner, Manager |
+| BRD-FR-036 | Skill taxonomy management; content lifecycle | SRS-FUNC-193, SRS-FUNC-195 | ✅ Defined | 500+ skills; publish/archive/delete |
+| BRD-FR-037 | Integration configuration | SRS-FUNC-194 | ✅ Defined | SharePoint, Confluence, GitHub, MS Learn |
+| PRD-F-018 | User & Role Management | SRS-FUNC-191, SRS-FUNC-192 | ✅ Defined | Admin console capabilities |
+| PRD-F-019 | Skill Taxonomy Management | SRS-FUNC-193 | ✅ Defined | Taxonomy definition |
+| PRD-F-020 | Integration Management | SRS-FUNC-194 | ✅ Defined | Configuration UI and health monitoring |
+
+### AI Governance & Safety
+
+| BRD/PRD ID | Requirement | SRS ID(s) | Status | Notes |
+|------------|-------------|-----------|--------|-------|
+| BRD-FR-038, BRD-OBJ-12 | Audit logging (AI prompts/responses) | SRS-FUNC-221 | ✅ Defined | 100% logging; 7-year retention |
+| BRD-FR-039, BRD-OBJ-12 | Hallucination detection | SRS-FUNC-222 | ✅ Defined | 0-100% scoring; visual indicators |
+| BRD-FR-041, BRD-OBJ-12 | PII detection and filtering | SRS-FUNC-223 | ✅ Defined | Regex + NLP; zero leakage target |
+| BRD-FR-040 | Flag harmful/inaccurate content | SRS-FUNC-224 | ✅ Defined | SME escalation; <24 hr resolution |
+| BRD-FR-053 | 7-year audit trail | SRS-FUNC-225 | ✅ Defined | Immutable logs; searchable |
+| PRD-F-021 | Audit Logging | SRS-FUNC-221, SRS-FUNC-225 | ✅ Defined | Comprehensive logging |
+| PRD-F-022 | Hallucination Detection | SRS-FUNC-222 | ✅ Defined | Quality scoring |
+| PRD-F-023 | PII Protection | SRS-FUNC-223 | ✅ Defined | Privacy safeguards |
+| PRD-F-024 | Content Quality Workflow | SRS-FUNC-224 | ✅ Defined | Escalation mechanism |
+
+---
+
+## 3. SRS to Design/Test Traceability
+
+*To be populated during HLD/LLD and Test Plan development*
+
+| SRS ID | Functional Requirement | HLD Reference | LLD Reference | Test Case IDs | Status |
+|--------|------------------------|---------------|---------------|---------------|--------|
+| SRS-FUNC-001 | SharePoint document ingestion | TBD | TBD | TBD | Pending Design |
+| SRS-FUNC-031 | AI content generation <20s | TBD | TBD | TBD | Pending Design |
+| ... | ... | ... | ... | ... | ... |
+
+---
+
+## 4. Coverage Analysis
+
+### BRD to SRS Coverage
+
+| BRD Category | Total Requirements | Mapped to SRS | Coverage % | Gaps |
+|--------------|-------------------|---------------|------------|------|
+| Business Objectives (BRD-OBJ-XX) | 12 | 12 | 100% | None |
+| Functional Requirements (BRD-FR-XX) | 41 | 41 | 100% | None |
+| Constraints | 15 | 15 | 100% | None |
+| **Total** | **68** | **68** | **100%** | **None** |
+
+### PRD to SRS Coverage
+
+| PRD Category | Total Requirements | Mapped to SRS | Coverage % | Gaps |
+|--------------|-------------------|---------------|------------|------|
+| Product Objectives (PRD-OBJ-XX) | 6 | 6 | 100% | None |
+| Features (PRD-F-XX) | 24 | 24 | 100% | None |
+| User Stories (PRD-US-XX) | Sample tracked | Sample tracked | 100% | None |
+| Business Rules (PRD-BR-XX) | 12 | 12 | 100% | None |
+| **Total** | **42** | **42** | **100%** | **None** |
+
+### SRS to Downstream Artifacts Coverage
+
+| SRS Category | Total Requirements | Design Coverage | Test Coverage | Implementation Coverage |
+|--------------|-------------------|-----------------|---------------|------------------------|
+| Content Ingestion (SRS-FUNC-001 to 015) | 15 | Pending HLD | Pending Test Plan | Pending Dev |
+| AI Generation (SRS-FUNC-031 to 045) | 15 | Pending HLD | Pending Test Plan | Pending Dev |
+| Content Review (SRS-FUNC-061 to 067) | 7 | Pending HLD | Pending Test Plan | Pending Dev |
+| Personalized Learning (SRS-FUNC-081 to 086) | 6 | Pending HLD | Pending Test Plan | Pending Dev |
+| Course Delivery (SRS-FUNC-111 to 117) | 7 | Pending HLD | Pending Test Plan | Pending Dev |
+| Search (SRS-FUNC-141 to 145) | 5 | Pending HLD | Pending Test Plan | Pending Dev |
+| Analytics (SRS-FUNC-161 to 166) | 6 | Pending HLD | Pending Test Plan | Pending Dev |
+| Platform Admin (SRS-FUNC-191 to 195) | 5 | Pending HLD | Pending Test Plan | Pending Dev |
+| AI Governance (SRS-FUNC-221 to 225) | 5 | Pending HLD | Pending Test Plan | Pending Dev |
+| **Total Functional** | **71** | **0%** | **0%** | **0%** |
+
+**Note:** Design, test, and implementation coverage will be tracked as HLD, Test Plan, and development progresses. Target: 100% coverage for all critical and high-priority requirements.
+
+---
+
+## 5. RTM Update History
+
+| Update Date | Updated By | Changes | Affected Requirements |
+|-------------|------------|---------|----------------------|
+| 2025-11-20 | Systems Analyst | Initial RTM baseline with NFR traceability | All NFRs (SEC, PERF, AVAIL, etc.) |
+| 2025-11-21 | Systems Analyst | Added SRS functional requirement traceability | SRS-FUNC-001 to SRS-FUNC-225 |
+| | | | |
+
+---
+
+## 6. Next Steps for RTM Maintenance
+
+1. **HLD Phase:** Map SRS functional requirements to HLD components and architecture decisions
+2. **LLD Phase:** Map SRS requirements to detailed component designs and interfaces
+3. **Test Planning:** Create test cases for each SRS requirement; update RTM with test case IDs
+4. **Development:** Link SRS requirements to Jira/Azure DevOps work items; track implementation progress
+5. **Testing:** Update RTM with test execution results; track defects linked to requirements
+6. **Deployment:** Verify requirement coverage in production; update verification evidence
+
+**RTM Governance:**
+- **Update Frequency:** Weekly during development; monthly during operations
+- **Review Forums:** Architecture board (design coverage); QA governance (test coverage); change advisory board (requirement changes)
+- **Approvers:** Product Owner (requirement changes); Solution Architect (design coverage); QA Lead (test coverage)
+
+---
+
+**END OF RTM UPDATES**
