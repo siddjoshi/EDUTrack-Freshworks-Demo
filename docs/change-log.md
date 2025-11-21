@@ -482,12 +482,83 @@ All significant changes to scope, timeline, budget, or approach must follow this
 
 ---
 
+### [2025-11-20] - Baseline: Non-Functional Requirements (NFR) v1.0
+
+**Category:** Requirements  
+**Impact:** High  
+**Affected Stakeholders:** Solution Architect, Security Team, DevOps, QA Lead, Compliance Officer
+
+**Description:**
+Completed comprehensive Non-Functional Requirements (NFR) specification document and Requirements Traceability Matrix (RTM) for the EDUTrack platform. This establishes measurable quality attributes and operational requirements that complement functional requirements.
+
+**Documents Created:**
+1. **Non-Functional Requirements (NFR.md)** (docs/requirements/NFR.md)
+   - 121 total NFRs across 10 categories
+   - Security: 30 NFRs (authentication, data protection, AI security)
+   - Performance: 23 NFRs (latency, throughput, resource utilization)
+   - Availability: 10 NFRs (99.9% uptime, MTTR, resilience)
+   - Compliance: 10 NFRs (GDPR, ISO 27001, SOC 2, audit trails)
+   - Accessibility: 10 NFRs (WCAG 2.1 Level AA compliance)
+   - Disaster Recovery: 10 NFRs (RTO/RPO, backup, failover)
+   - Maintainability: 10 NFRs (code quality, testing, documentation)
+   - Observability: 10 NFRs (monitoring, logging, alerting)
+   - Portability & Cost: 8 NFRs (browser support, cost optimization)
+
+2. **Requirements Traceability Matrix (RTM.md)** (docs/requirements/RTM.md)
+   - 100% NFR traceability to BRD business objectives
+   - 100% NFR traceability to PRD product features
+   - Complete mapping of NFRs to design references and test plans
+   - Coverage summary showing 121/121 NFRs defined and traced
+
+**Key NFR Highlights:**
+- **Security:** Azure AD SSO, RBAC, encryption at rest/transit, PII protection, hallucination detection
+- **Performance:** <20s AI generation, <500ms search (P95), 10,000 concurrent users
+- **Compliance:** GDPR compliance, 7-year audit retention, ISO 27001 controls
+- **Availability:** 99.9% uptime SLA, multi-region DR, <30min MTTR
+- **Accessibility:** WCAG 2.1 Level AA, screen reader support, keyboard navigation
+
+**Standards & Frameworks:**
+- ISO/IEC 25010 Software Product Quality model
+- OWASP ASVS Level 2 (Application Security)
+- WCAG 2.1 Level AA (Accessibility)
+- GDPR, ISO 27001, SOC 2 Type II
+- Azure Well-Architected Framework
+
+**Rationale:**
+NFRs are critical for:
+- Defining measurable quality targets for system acceptance
+- Guiding architectural and design decisions
+- Establishing SLOs/SLAs for operational monitoring
+- Ensuring security, compliance, and regulatory requirements
+- Validating system meets business objectives (99.9% uptime, <20s generation, etc.)
+
+**Coverage Metrics:**
+- Total NFRs: 121 (67 Critical, 48 High, 6 Medium)
+- Traceability: 100% to BRD/PRD
+- Test Plans: 100% defined
+- Validation Methods: 100% specified
+
+**Action Items:**
+- [x] Create comprehensive NFR document - Owner: Solution Architect - Completed: 2025-11-20
+- [x] Create RTM with NFR traceability - Owner: Systems Analyst - Completed: 2025-11-20
+- [ ] Review NFR with Solution Architect - Owner: Product Owner - Due: 2025-11-25
+- [ ] Security NFR validation - Owner: CISO - Due: 2025-11-30
+- [ ] Performance NFR feasibility review - Owner: DevOps Lead - Due: 2025-11-30
+- [ ] NFR approval and baseline - Owner: Product Owner - Due: 2025-12-05
+
+**Approvals:**
+- Prepared by: NFR Specialist Agent on 2025-11-20
+- Pending review by: Product Owner, Solution Architect, QA Lead, Security Architect, DevOps Lead
+
+---
+
 ## Revision History
 
 | Version | Date | Author | Changes | Approved By |
 |---------|------|--------|---------|-------------|
 | 1.0 | 2025-11-19 | Documentation Specialist | Initial creation with inception phase changes | Pending review |
 | 1.1 | 2025-11-20 | Portfolio Manager Agent | Added governance artefact traceability and approval mapping enhancements | Pending review |
+| 1.2 | 2025-11-20 | NFR Specialist Agent | Added NFR v1.0 baseline and RTM creation | Pending review |
 
 ---
 
