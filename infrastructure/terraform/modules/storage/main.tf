@@ -79,6 +79,12 @@ resource "azurerm_storage_container" "backups" {
   container_access_type = "private"
 }
 
+# Local variables for compliance retention periods
+locals {
+  # 7 years in days for compliance retention (GDPR, ISO 27001)
+  compliance_retention_days = 2555  # 7 * 365 = 2555 days
+}
+
 # Lifecycle Management Policy
 resource "azurerm_storage_management_policy" "main" {
   storage_account_id = azurerm_storage_account.main.id
@@ -94,7 +100,7 @@ resource "azurerm_storage_management_policy" "main" {
       base_blob {
         tier_to_cool_after_days_since_modification_greater_than    = 90
         tier_to_archive_after_days_since_modification_greater_than = 365
-        delete_after_days_since_modification_greater_than          = 2555  # 7 years for compliance
+        delete_after_days_since_modification_greater_than          = local.compliance_retention_days
       }
       snapshot {
         delete_after_days_since_creation_greater_than = 90

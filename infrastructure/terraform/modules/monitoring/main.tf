@@ -36,7 +36,7 @@ resource "azurerm_monitor_action_group" "main" {
 
   email_receiver {
     name                    = "DevOps Team"
-    email_address           = "devops@edutrack.example.com"
+    email_address           = var.alert_email
     use_common_alert_schema = true
   }
 
@@ -120,7 +120,7 @@ resource "azurerm_monitor_metric_alert" "exceptions" {
 
 # Availability Test (Web Test) - Production only
 resource "azurerm_application_insights_standard_web_test" "availability" {
-  count                   = var.environment == "prod" ? 1 : 0
+  count                   = var.environment == "prod" && var.frontend_url != null ? 1 : 0
   name                    = "webtest-edutrack-availability"
   resource_group_name     = var.resource_group_name
   location                = var.location
@@ -129,7 +129,7 @@ resource "azurerm_application_insights_standard_web_test" "availability" {
   frequency               = 300  # 5 minutes
 
   request {
-    url = "https://app-edutrack-web-prod-eus.azurewebsites.net/health"
+    url = "${var.frontend_url}/health"
   }
 
   validation_rules {

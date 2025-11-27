@@ -9,11 +9,13 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.85"
+      # Pin to 3.x minor version for stability while allowing patch updates
+      # Review and update when upgrading to 4.x
+      version = ">= 3.85.0, < 4.0.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.6"
+      version = ">= 3.6.0, < 4.0.0"
     }
   }
 

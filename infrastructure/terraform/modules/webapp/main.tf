@@ -3,13 +3,29 @@
 # Azure App Service for Frontend and Backend
 # -----------------------------------------------------------------------------
 
+# Local variables for SKU mapping
+locals {
+  sku_tier_prefix = {
+    "Free"     = "F"
+    "Shared"   = "D"
+    "Basic"    = "B"
+    "Standard" = "S"
+    "Premium"  = "P"
+    "PremiumV2" = "P"
+    "PremiumV3" = "P"
+  }
+  sku_prefix = lookup(local.sku_tier_prefix, var.app_service_plan_sku.tier, "S")
+  sku_size   = replace(var.app_service_plan_sku.size, "S", "")
+  sku_name   = "${local.sku_prefix}${local.sku_size}"
+}
+
 # App Service Plan
 resource "azurerm_service_plan" "main" {
   name                = "plan-edutrack-${var.environment}-${var.location_short}"
   location            = var.location
   resource_group_name = var.resource_group_name
   os_type             = "Linux"
-  sku_name            = "${var.app_service_plan_sku.tier == "Standard" ? "S" : var.app_service_plan_sku.tier == "Premium" ? "P" : "B"}${replace(var.app_service_plan_sku.size, "S", "")}"
+  sku_name            = local.sku_name
 
   tags = var.tags
 }
@@ -33,9 +49,11 @@ resource "azurerm_linux_web_app" "frontend" {
       node_version = "20-lts"
     }
 
+    # CORS configuration - backend URL is set dynamically
+    # In production, this should be restricted to specific trusted domains
     cors {
-      allowed_origins     = ["*"]
-      support_credentials = false
+      allowed_origins     = var.environment == "prod" ? ["https://${var.frontend_app_name}.azurewebsites.net"] : ["*"]
+      support_credentials = var.environment == "prod"
     }
   }
 

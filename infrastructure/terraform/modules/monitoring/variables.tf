@@ -26,3 +26,15 @@ variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
 }
+
+variable "alert_email" {
+  description = "Email address for alert notifications"
+  type        = string
+  default     = "devops@edutrack.example.com"
+}
+
+variable "frontend_url" {
+  description = "URL of the frontend web app for availability testing"
+  type        = string
+  default     = null
+}
